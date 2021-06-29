@@ -6,49 +6,11 @@
 /*   By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 14:23:46 by aldubar           #+#    #+#             */
-/*   Updated: 2021/06/29 09:44:27 by aldubar          ###   ########.fr       */
+/*   Updated: 2021/06/29 12:13:06 by aldubar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex_bonus.h"
-
-static void	close_pipe(int *pipefd, int len)
-{
-	int		i;
-
-	i = 0;
-	while (i < len)
-	{
-		close((pipefd + (i * 2))[0]);
-		close((pipefd + (i * 2))[1]);
-		i++;
-	}
-}
-
-static int	choose_redir(char *file, enum e_redir redir)
-{
-	int		fd;
-
-	if (redir == IN)
-		fd = open(file, O_RDONLY);
-	else
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
-	{
-		ft_putstr_fd("pipex: ", STDERR_FILENO);
-		ft_putstr_fd(file, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putchar_fd('\n', STDERR_FILENO);
-		return (1);
-	}
-	if (redir == IN)
-		dup2(fd, STDIN_FILENO);
-	else if (redir == OUT)
-		dup2(fd, STDOUT_FILENO);
-	close(fd);
-	return (0);
-}
 
 static int	redir(int i, t_data *data, int *pipefd)
 {
@@ -101,7 +63,6 @@ static int	exec_cmd(int *pipefd, int i, t_data *data)
 	args = ft_split(data->av[i + 2], ' ');
 	if (!args)
 	{
-		//free(pipefd);
 		free(data->pipefd);
 		free(data);
 		exit_error(SPLIT_ERROR);
@@ -116,7 +77,7 @@ static int	exec_cmd(int *pipefd, int i, t_data *data)
 	return (ret);
 }
 
-static int	wait_signal(t_data *data, pid_t lastpid)//, int *pipefd)
+static int	wait_signal(t_data *data, pid_t lastpid)
 {
 	int		i;
 	int		status;
@@ -136,33 +97,16 @@ static int	wait_signal(t_data *data, pid_t lastpid)//, int *pipefd)
 			ret = WEXITSTATUS(status);
 		i++;
 	}
-//	free(pipefd);
 	free(data->pipefd);
 	free(data);
 	return (ret);
 }
 
-static int	pipex(t_data *data)
-{
-	int		i;
-	pid_t	pid;
-//	int		*pipefd;
-
-//	pipefd = (int *)malloc(sizeof(int) * (data->len * 2));
-//	if (!pipefd)
-//		return (1);
-	i = 0;
-	while (i < data->len)
-	{
-		pid = exec_cmd(data->pipefd + (i * 2), i, data);
-		i++;
-	}
-	return (wait_signal(data, pid));//, data->pipefd));
-}
-
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
+	int		i;
+	pid_t	pid;
 
 	data = NULL;
 	if (ac < 4)
@@ -172,7 +116,13 @@ int	main(int ac, char **av, char **env)
 		data = init_data(ac, av, env);
 		if (!data)
 			return (1);
-		return (pipex(data));
+		i = 0;
+		while (i < data->len)
+		{
+			pid = exec_cmd(data->pipefd + (i * 2), i, data);
+			i++;
+		}
+		return (wait_signal(data, pid));
 	}
 	return (0);
 }

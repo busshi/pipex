@@ -6,7 +6,7 @@
 /*   By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 01:37:04 by aldubar           #+#    #+#             */
-/*   Updated: 2021/06/29 02:48:38 by aldubar          ###   ########.fr       */
+/*   Updated: 2021/06/29 12:09:39 by aldubar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,18 @@ void	close_fd(int i, int len, int *fd)
 	{
 		if (close(fd[1]))
 			ft_putstr_fd("fd close error!\n", 2);
+	}
+}
+
+void	close_pipe(int *pipefd, int len)
+{
+	int		i;
+
+	i = 0;
+	while (i < len)
+	{
+		close((pipefd + (i * 2))[0]);
+		close((pipefd + (i * 2))[1]);
+		i++;
 	}
 }
