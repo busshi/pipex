@@ -6,38 +6,35 @@
 /*   By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 22:35:37 by aldubar           #+#    #+#             */
-/*   Updated: 2021/06/28 17:45:40 by aldubar          ###   ########.fr       */
+/*   Updated: 2021/06/29 12:32:57 by aldubar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-static int	open_fd(t_data *data)
+int	choose_redir(char *file, enum e_redir redir)
 {
-	int		error;
+	int		fd;
 
-	error = 0;
-	data->fd[0] = open(data->av[1], O_RDONLY);
-	if (data->fd[0] <= 0)
+	if (redir == IN)
+		fd = open(file, O_RDONLY);
+	else
+		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
 	{
 		ft_putstr_fd("pipex: ", STDERR_FILENO);
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
+		ft_putstr_fd(file, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(data->av[1], STDERR_FILENO);
-		ft_putchar_fd('\n', STDERR_FILENO);
-		error++;
-	}
-	data->fd[1] = open(data->av[4], O_CREAT | O_TRUNC | O_WRONLY, 0644);
-	if (data->fd[1] <= 0)
-	{
-		ft_putstr_fd("pipex: ", STDERR_FILENO);
 		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(data->av[4], STDERR_FILENO);
 		ft_putchar_fd('\n', STDERR_FILENO);
-		error++;
+		return (1);
 	}
-	return (error);
+	if (redir == IN)
+		dup2(fd, STDIN_FILENO);
+	else if (redir == OUT)
+		dup2(fd, STDOUT_FILENO);
+	close(fd);
+	return (0);
 }
 
 t_data	*init_data(char **av, char **envp)
@@ -50,16 +47,9 @@ t_data	*init_data(char **av, char **envp)
 	data->path = NULL;
 	data->env = envp;
 	data->av = av;
-//	data->len = ac - 3;
 	data->pipefd = (int *)malloc(sizeof(int) * 4);
 	if (!data->pipefd)
 	{
-		free(data);
-		return (NULL);
-	}
-	if (open_fd(data))
-	{
-		free(data->pipefd);
 		free(data);
 		return (NULL);
 	}

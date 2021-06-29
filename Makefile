@@ -6,13 +6,13 @@
 #    By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/14 14:19:45 by aldubar           #+#    #+#              #
-#    Updated: 2021/06/28 17:58:24 by aldubar          ###   ########.fr        #
+#    Updated: 2021/06/29 12:22:24 by aldubar          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			=	pipex
 
-SRCS			=	main.c path.c exit.c \
+SRCS			=	main.c init.c path.c exit.c \
 				libft_utils.c libft_utils2.c libft_utils3.c
 
 SRCS_BONUS		=	main_bonus.c init_bonus.c path_utils_bonus.c exit_bonus.c \
