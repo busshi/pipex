@@ -6,7 +6,7 @@
 /*   By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 01:37:04 by aldubar           #+#    #+#             */
-/*   Updated: 2021/06/29 13:25:57 by aldubar          ###   ########.fr       */
+/*   Updated: 2021/06/29 13:36:35 by aldubar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,6 @@ void	close_pipe(int *pipefd, int len)
 
 void	exit_pipex(int i, char **args, t_data *data, int status)
 {
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
 	close_pipe(data->pipefd, i);
 	ft_free_tab(args);
 	free(data->pipefd);
@@ -39,6 +36,9 @@ void	exit_pipex(int i, char **args, t_data *data, int status)
 		data->path = NULL;
 	}
 	free(data);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 	exit(status);
 }
 

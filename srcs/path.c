@@ -6,7 +6,7 @@
 /*   By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 01:36:07 by aldubar           #+#    #+#             */
-/*   Updated: 2021/06/29 12:18:05 by aldubar          ###   ########.fr       */
+/*   Updated: 2021/06/29 13:44:40 by aldubar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,13 @@ static char	**split_env_path(char *cmd, char *path)
 	return (paths);
 }
 
+static void	error_not_found(char *cmd)
+{
+	ft_putstr_fd("pipex: command not found: ", STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putchar_fd('\n', STDERR_FILENO);
+}
+
 char	*find_bin_path(char *cmd, char *path)
 {
 	char	**paths;
@@ -63,7 +70,10 @@ char	*find_bin_path(char *cmd, char *path)
 
 	paths = split_env_path(cmd, path);
 	if (!paths)
+	{
+		error_not_found(cmd);
 		return (NULL);
+	}
 	i = 0;
 	while (paths[i])
 	{
@@ -76,8 +86,6 @@ char	*find_bin_path(char *cmd, char *path)
 		i++;
 	}
 	ft_free_tab(paths);
-	ft_putstr_fd("pipex: command not found: ", STDERR_FILENO);
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	ft_putchar_fd('\n', STDERR_FILENO);
+	error_not_found(cmd);
 	return (NULL);
 }
