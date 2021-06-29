@@ -6,7 +6,7 @@
 /*   By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 14:23:46 by aldubar           #+#    #+#             */
-/*   Updated: 2021/06/29 13:29:35 by aldubar          ###   ########.fr       */
+/*   Updated: 2021/06/29 14:48:32 by aldubar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,7 @@ static int	wait_signal(t_data *data, pid_t lastpid)
 	}
 	free(data->pipefd);
 	free(data);
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
+	close_fd();
 	return (ret);
 }
 
