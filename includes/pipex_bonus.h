@@ -6,7 +6,7 @@
 /*   By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 14:24:28 by aldubar           #+#    #+#             */
-/*   Updated: 2021/06/29 12:12:09 by aldubar          ###   ########.fr       */
+/*   Updated: 2021/06/29 12:57:22 by aldubar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char	*find_env_path(char **env);
 char	*find_bin_path(char *cmd, char *path);
 int		choose_redir(char *file, enum e_redir redir);
 void	close_pipe(int *pipefd, int len);
+void	exit_pipex(int i, char **args, t_data *data, int status);
 void	exit_error(enum e_err error);
 size_t	ft_strlen(const char *s);
 void	ft_putchar_fd(char c, int fd);

@@ -6,7 +6,7 @@
 /*   By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 14:23:46 by aldubar           #+#    #+#             */
-/*   Updated: 2021/06/29 12:37:56 by aldubar          ###   ########.fr       */
+/*   Updated: 2021/06/29 13:04:15 by aldubar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	exec_dup(int *pipefd, int i, char **args, t_data *data)
 	{
 		ret = redir(i, data, pipefd);
 		if (ret)
-			exit(2);
+			exit_pipex(i + 1, args, data, 2);
 		close_pipe(pipefd - (i * 2), i + 1);
 		if (!data->path)
 		{
@@ -99,6 +99,9 @@ static int	wait_signal(t_data *data, pid_t lastpid)
 	}
 	free(data->pipefd);
 	free(data);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 	return (ret);
 }
 
