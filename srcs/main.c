@@ -6,7 +6,7 @@
 /*   By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 14:23:46 by aldubar           #+#    #+#             */
-/*   Updated: 2021/06/29 14:48:32 by aldubar          ###   ########.fr       */
+/*   Updated: 2021/06/29 17:22:34 by aldubar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ static int	wait_signal(t_data *data, pid_t lastpid)
 int	main(int ac, char **av, char **envp)
 {
 	t_data	*data;
-	int		i;
 	pid_t	pid;
 
 	data = NULL;
@@ -117,7 +116,6 @@ int	main(int ac, char **av, char **envp)
 		data = init_data(av, envp);
 		if (!data)
 			return (1);
-		i = 0;
 		pid = exec_cmd(data->pipefd, 0, data);
 		pid = exec_cmd(data->pipefd + 2, 1, data);
 		return (wait_signal(data, pid));
