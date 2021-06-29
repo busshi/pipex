@@ -6,7 +6,7 @@
 /*   By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 14:23:46 by aldubar           #+#    #+#             */
-/*   Updated: 2021/06/29 02:54:25 by aldubar          ###   ########.fr       */
+/*   Updated: 2021/06/29 09:44:27 by aldubar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ static int	exec_dup(int *pipefd, int i, char **args, t_data *data)
 	int		ret;
 
 	pipe(pipefd);
-	ret = redir(i, data, pipefd);
 	childpid = fork();
 	if (!childpid)
 	{
-		close_pipe(pipefd - (i * 2), i + 1);
+		ret = redir(i, data, pipefd);
 		if (ret)
 			exit(2);
+		close_pipe(pipefd - (i * 2), i + 1);
 		if (!data->path)
 		{
 			paths = find_env_path(data->env);
@@ -101,6 +101,7 @@ static int	exec_cmd(int *pipefd, int i, t_data *data)
 	args = ft_split(data->av[i + 2], ' ');
 	if (!args)
 	{
+		//free(pipefd);
 		free(data->pipefd);
 		free(data);
 		exit_error(SPLIT_ERROR);
@@ -115,7 +116,7 @@ static int	exec_cmd(int *pipefd, int i, t_data *data)
 	return (ret);
 }
 
-static int	wait_signal(t_data *data, pid_t lastpid, int *pipefd)
+static int	wait_signal(t_data *data, pid_t lastpid)//, int *pipefd)
 {
 	int		i;
 	int		status;
@@ -130,11 +131,12 @@ static int	wait_signal(t_data *data, pid_t lastpid, int *pipefd)
 		if (pid <= 0)
 			break ;
 		if (!i)
-			close_pipe(pipefd, data->len);
+			close_pipe(data->pipefd, data->len);
 		if (pid == lastpid)
 			ret = WEXITSTATUS(status);
 		i++;
 	}
+//	free(pipefd);
 	free(data->pipefd);
 	free(data);
 	return (ret);
@@ -144,14 +146,18 @@ static int	pipex(t_data *data)
 {
 	int		i;
 	pid_t	pid;
+//	int		*pipefd;
 
+//	pipefd = (int *)malloc(sizeof(int) * (data->len * 2));
+//	if (!pipefd)
+//		return (1);
 	i = 0;
 	while (i < data->len)
 	{
 		pid = exec_cmd(data->pipefd + (i * 2), i, data);
 		i++;
 	}
-	return (wait_signal(data, pid, data->pipefd));
+	return (wait_signal(data, pid));//, data->pipefd));
 }
 
 int	main(int ac, char **av, char **env)
