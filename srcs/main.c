@@ -6,7 +6,7 @@
 /*   By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 14:23:46 by aldubar           #+#    #+#             */
-/*   Updated: 2021/06/29 13:04:15 by aldubar          ###   ########.fr       */
+/*   Updated: 2021/06/29 13:29:35 by aldubar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	exec_dup(int *pipefd, int i, char **args, t_data *data)
 			paths = find_env_path(data->env);
 			data->path = find_bin_path(args[0], paths);
 			if (!data->path)
-				exit(127);
+				exit_pipex(i + 1, args, data, 127);
 		}
 		return (execve(data->path, args, data->env));
 	}
