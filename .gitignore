@@ -1,0 +1,7 @@
+pipex-tester
+newsrcs
+oldsrcs
+*.o
+pipex
+in
+out
