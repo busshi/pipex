@@ -1,4 +1,4 @@
-![norminette](https://github.com/busshi/pipex/workflows/norminette/badge.svg)
+![normv3](https://github.com/busshi/pipex/actions/workflows/norm.yml/badge.svg) ![make](https://github.com/busshi/pipex/actions/workflows/make.yml/badge.svg)
 
 
 --- PIPEX ---

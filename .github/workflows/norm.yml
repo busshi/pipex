@@ -1,0 +1,11 @@
+name: norm-v3
+on: [push, pull_request]
+
+jobs:
+  build_job:
+    runs-on: ubuntu-latest
+    name: norm-v3
+    steps:
+    - uses: actions/checkout@v2
+    - run: docker build -t normv3 .github/normv3
+    - run: docker run -v $PWD:/.github/normv3/ normv3 

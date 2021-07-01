@@ -1,0 +1,11 @@
+name: compil
+on: [push, pull_request]
+
+jobs:
+  compil_job:
+    runs-on: ubuntu-latest
+    name: compil
+    steps:
+    - uses: actions/checkout@v2
+    - run: docker build -t project .github/make_project
+    - run: docker run -v $PWD:/.github/make_project/ project 
