@@ -1,10 +1,10 @@
-name: compil
+name: checker
 on: [push, pull_request]
 
 jobs:
   compil_job:
     runs-on: ubuntu-latest
-    name: compil
+    name: checker
     steps:
     - uses: actions/checkout@v2
     - run: docker build -t checker .github/checker
