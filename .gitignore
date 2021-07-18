@@ -1,4 +1,5 @@
-
+pipex-tester
+pipex_checker
 *.o
 pipex
 in

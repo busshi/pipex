@@ -6,7 +6,7 @@
 #    By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/14 14:19:45 by aldubar           #+#    #+#              #
-#    Updated: 2021/07/18 11:47:02 by aldubar          ###   ########.fr        #
+#    Updated: 2021/07/18 15:21:59 by aldubar          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,8 @@ fclean:		clean
 		@echo $(OK)
 
 check:		fclean
-		@cd pipex-tester && /bin/bash run.sh
+		@if [ ! -d pipex_checker ]; then git clone https://github.com/busshi/pipex_checker.git; fi
+		@cd pipex_checker && /bin/bash pipex_checker.sh
 
 re:		fclean all
 
