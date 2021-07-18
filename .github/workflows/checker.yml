@@ -7,5 +7,5 @@ jobs:
     name: compil
     steps:
     - uses: actions/checkout@v2
-    - run: docker build -t project .github/make_project
-    - run: docker run -v $PWD:/.github/make_project/ project 
+    - run: docker build -t checker .github/checker
+    - run: docker run -v $PWD:/.github/checker/ checker 

@@ -6,7 +6,7 @@
 #    By: aldubar <aldubar@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/14 14:19:45 by aldubar           #+#    #+#              #
-#    Updated: 2021/06/29 12:22:24 by aldubar          ###   ########.fr        #
+#    Updated: 2021/07/18 11:47:02 by aldubar          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,9 @@ fclean:		clean
 		$(RM) $(NAME)
 		@echo $(OK)
 
+check:		fclean
+		@cd pipex-tester && /bin/bash run.sh
+
 re:		fclean all
 
-.PHONY:		all run clean fclean re~
+.PHONY:		all run clean fclean re check
