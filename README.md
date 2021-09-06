@@ -1,5 +1,7 @@
 ![normv3](https://github.com/busshi/pipex/actions/workflows/norm.yml/badge.svg) ![checker](https://github.com/busshi/pipex/actions/workflows/checker.yml/badge.svg)
 
+[![aldubar's 42Project Score](https://badge42.herokuapp.com/api/project/aldubar/pipex)](https://github.com/JaeSeoKim/badge42)
+
 
 --- PIPEX ---
 
